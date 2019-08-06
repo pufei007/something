@@ -38,27 +38,36 @@ function userNameReplace(name) {
     // let Spacer=/[`~!@#$%^&*()_\-+=<>?:"{}|,.\/;'\\[\]·~！@#￥%……&*（）——\-+={}|《》？：“”【】、；‘’，。、]/im;
     // let spacer = /[-_|—]/g;
     let spacer = /(\-{2,})|(\_+)|(\|+)|(\——+)/; //间隔符（或连续间隔符）如---， _ ，| ，统一改为-
+    let overFour = /[(\[)|(\{})|(\【)|(\『})|(\〖})]\S{5,}[(\〗)|(\』)|(\】)|(\})|(\])]/; //﹛﹜『』〖〗［］【】（书名号，小括号除外）等括号内字数大于4个字 删除
+    let lessFour = /[(\[)|(\{})|(\【)|(\『})|(\〖})]\S{1,5}[(\〗)|(\』)|(\】)|(\})|(\])]/; //﹛﹜『』〖〗［］【】（书名号，小括号除外）等括号内字数少于等于4个字改为「」或[ ]
     let emoji = /(\ud83c[\udf00-\udfff])|(\ud83d[\udc00-\ude4f])|(\ud83d[\ude80-\udeff])/g; //匹配emoji
+    // let emoji = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g; //匹配emoji
+    let someSpace = /\s{2,}/g; //匹配句中出現连续空格
+    let trimSpace = /(^\s*)|(\s*$)/g; //删除前后空格
+    let end = /(\.)|(\。)|(\，)|(\,)|(\；)|(\;)|(\—)|(\——)/; //删除末尾出现无意义符号：中英文句号，逗号，分号，破折号
+    let fullStop = /(\。)/; //句中出现中文句号改为空格
+    let continuity = /[,.?:;'!"，。？：；’‘！”“、]{2,}\…\…/; //连续标点符号且最后一个是省略号
+    // let interChange=/^((?![,.?:;'!"])[\u2E80-\u9FFF，。？：；’‘！”“、])+$/
+    let interChange = /([\u2E80-\u9FFF,.?:;'!"])+$/;
     // console.log(emoji);
     // let space = /\uD83C[\uDF00-\uDFFF]|\uD83D[\uDC00-\uDE4F]/g;
     // let someSpace = /(^\s{2,})|(\s{2,}$)|(\s{5,})/g; //匹配句中出現连续空格
-    let someSpace = /\s{2,}/g; //匹配句中出現连续空格
     // let someSpace = /(^\s{1,})|(\s{1,}$)/g ; //匹配句中出現连续空格
     // let someSpace =/(^\s*)|(\s*$)/g ; //字符串前后所有空格
-    let end = /(\.)|(\。)|(\，)|(\,)|(\；)|(\;)|(\—)|(\——)/; //删除末尾出现无意义符号：中英文句号，逗号，分号，破折号
-    let fullStop = /(\。)/; //句中出现中文句号改为空格
-    let trimSpace = /(^\s*)|(\s*$)/g; //删除前后空格
     // let toChines=/[\u4e00-\u9fa5][\·\~\！\@\#\￥\%\……\&\*\（\）\——\-\+\=\【\】\{\}\、\|\；\‘\’\：\“\”\《\》\？\，\。\、\`\~\!\#\$\%\^\&\*\(\)\_\[\]{\}\\\|\;\'\'\:\"\"\,\.\/\<\>\?]/
     // let overFour=/\([\s\S]*?\)/
-    let overFour = /[(\[)|(\{})|(\【)|(\『})|(\〖})]\S{5,}[(\〗)|(\』)|(\】)|(\})|(\])]/;//﹛﹜『』〖〗［］【】（书名号，小括号除外）等括号内字数大于4个字 删除
-    let lessFour = /[(\[)|(\{})|(\【)|(\『})|(\〖})]\S{1,5}[(\〗)|(\』)|(\】)|(\})|(\])]/;//﹛﹜『』〖〗［］【】（书名号，小括号除外）等括号内字数少于等于4个字改为「」或[ ]
-    console.log(overFour.test(name));
+    // console.log(emoji.test(name));
+    // console.log(name.replace(RegExp(emoji, 'g')), '2222222');
     // name = name.replace(emoji, '');
+    // let name=name
     // name = name.trim();
     if (emoji.test(name)) {
-      name = name.replace(emoji, '');
-    }
-    if (fullStop.test(name)) {
+      console.log(11);
+      name = name.replace(emoji, '')
+      //  name.replace(RegExp(emoji, 'g'), '2222222');
+      // console.log(name.replace(RegExp(emoji, 'g')), '');
+    } else if (fullStop.test(name)) {
+      console.log(2);
       name = name.replace(RegExp(fullStop, 'g'), ' ');
     }
     if (someSpace.test(name)) {
@@ -91,6 +100,19 @@ function userNameReplace(name) {
         console.log(last);
         return `[${last}]`;
       });
+    }
+    if (continuity.test(name)) {
+      name = name.replace(RegExp(continuity, 'g'), '……');
+    }
+    if (interChange.test(name)) {
+      // name = name.replace(RegExp(interChange, 'g'), match => {
+      //   console.log(match);
+      let last = name.replace(',', '，vvv');
+      //  let last = match.substring(0, match.length - 1);
+      // let last = match.substr(1);
+      console.log(last);
+      //   return `${last}`;
+      // });
     }
     // name = name.replace(space, '-');
     // name = name.replace(someSpace, '');

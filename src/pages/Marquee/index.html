@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>无标题文档</title>
+    <style>
+        section{height:300px;width:800px;border:1px solid #930;}
+        .div0{width:800px;position:relative;border: 1px solid #C39}
+        .div1{width:800px;}
+        .div2{width:800px;position:absolute;left:0;top:20px;z-index:5}
+        marquee{width:800px;}
+    </style>
+</head>
+ 
+<body>
+<section>
+    <h1>自己写的最简单的循环弹幕，利用marquee标签</h1>
+</section>
+<div class="div0">
+    <div class="div1">
+        webpack是近期最火的一款模块加载器兼打包工具，它能把各种资源，例如JS（含JSX）、coffee、样式（含less/sass）、图片等都作为模块来使用和处理。
+        我们可以直接使用 require(XXX) 的形式来引入各模块，即使它们可能需要经过编译（比如JSX和sass），但我们无须在上面花费太多心思，因为 webpack 有着各种健全的加载器（loader）在默默处理这些事情，这块我们后续会提到。
+        你可以不打算将其用在你的项目上，但没有理由不去掌握它，因为以近期 Github 上各大主流的（React相关）项目来说，它们仓库上所展示的示例已经是基于 webpack 来开发的，比如 React-Boostrap 和 Redux。
+    </div>
+    <div class ="div2">
+    </div>
+</div>
+<script src="http://apps.bdimg.com/libs/jquery/2.1.1/jquery.js"></script>
+<script>
+    $(document).ready(function() {
+        //tanmu函数,参数说明.content:弹幕内容;fontcolor:弹幕颜色;speed:运动速度，单位为px/s（每秒运动多少像素）;startTime:开始的时间，单位为毫秒;
+        function tanmu(content, fontColor, speed, startTime) {
+            function add(content, speed) {
+                var html = "";
+                html += "<marquee   scrolldelay='1000' direction='left' scrollamount='" + speed + "' style='color:" + fontColor + "'>" + content + "</marquee>";
+                $(".div2").append(html);
+            }
+ 
+            setTimeout(add(content, speed), startTime);
+            //调用弹幕函数
+        }
+        tanmu("我来了1,我来了1,我来了1,我来了1,我来了1,","#f00",90,0);
+        tanmu("我来了2,我来了2,我来了2,我来了2,我来了2,","#0f0",100,1000);
+        tanmu("我来了3,我来了3,我来了3,我来了3,我来了3,","#00f",150,2000);
+        tanmu("我来了4,我来了4,我来了4,我来了4,我来了4,","#930",130,2500);
+    })
+ 
+</script>
+</body>
+</html>
