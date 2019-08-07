@@ -1,11 +1,8 @@
-import styles from './index.css';
+import 'normalize.css';
+import styles from './index.less';
 
 function BasicLayout(props) {
-  return (
-    <div className={styles.normal}>
-      {props.children}
-    </div>
-  );
+  return <div className={styles.normal}>{props.children}</div>;
 }
 
 export default BasicLayout;
